@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SignalRService } from './services/signal-r.service';
-import { ChartModel } from './_interfaces/chartdata.model';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

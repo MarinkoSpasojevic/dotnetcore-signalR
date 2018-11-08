@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as signalR from "@aspnet/signalr";
-import { ChartModel } from '../_interfaces/chartdata.model';
+import { ChartModel } from '../_interfaces/chartmodel.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRService {
-  public data: ChartModel[] = [{data:[], label:''}, {data:[], label:''}, {data:[], label:''}, {data:[], label:''}];
+  public data: ChartModel[];
   public bradcastedData: ChartModel[];
 
 private hubConnection: signalR.HubConnection
