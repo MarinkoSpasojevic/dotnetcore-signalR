@@ -11,9 +11,9 @@ namespace BlazorProducts.Client.Pages
 	public partial class SignalRCharts : IDisposable
 	{
 		private HubConnection _hubConnection;
-		private List<ChartDto> _data;
 
 		public List<ChartDto> Data = new List<ChartDto>();
+		public List<ChartDto> ExchangedData = new List<ChartDto>();
 		[Inject]
 		public IProductHttpRepository Repo { get; set; }
 
@@ -22,6 +22,7 @@ namespace BlazorProducts.Client.Pages
 			await StartHubConnection();
 
 			AddTransferChartDataListener();
+			AddExchangeDataListener();
 
 			await Repo.CallChartEndpoint();
 		}
@@ -39,14 +40,26 @@ namespace BlazorProducts.Client.Pages
 
 		private void AddTransferChartDataListener()
 		{
-			_hubConnection.On<List<ChartDto>>("transferchartdata", (_data) =>
+			_hubConnection.On<List<ChartDto>>("TransferChartData", (data) =>
 			{
-				foreach (var item in _data)
+				foreach (var item in data)
 				{
 					Console.WriteLine($"Label: {item.Label}, Value: {item.Value}");
 				}
 
-				Data = _data;
+				Data = data;
+				StateHasChanged();
+			});
+		}
+
+		public async Task SendToAcceptChartDataMethod() =>
+			await _hubConnection.SendAsync("AcceptChartData", Data);
+
+		private void AddExchangeDataListener()
+		{
+			_hubConnection.On<List<ChartDto>>("ExchangeChartData", (data) =>
+			{
+				ExchangedData = data;
 				StateHasChanged();
 			});
 		}

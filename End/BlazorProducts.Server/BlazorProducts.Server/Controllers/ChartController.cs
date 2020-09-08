@@ -22,7 +22,7 @@ namespace BlazorProducts.Server.Controllers
 		public IActionResult Get()
 		{
 			if (!_timer.IsTimerStarted)
-				_timer.PrepareTimer(() => _hub.Clients.All.SendAsync("transferchartdata", DataManager.GetData()));
+				_timer.PrepareTimer(() => _hub.Clients.All.SendAsync("TransferChartData", DataManager.GetData()));
 
 			return Ok(new { Message = "Request Completed" });
 		}
